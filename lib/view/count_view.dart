@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:nado_giza/viewModel/count_view_model.dart';
+import 'package:nado_giza/viewModel/count_viewmodel.dart';
 
 class CountView extends StatelessWidget {
   const CountView({super.key});
