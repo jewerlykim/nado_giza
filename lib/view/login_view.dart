@@ -24,6 +24,7 @@ class LoginView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextField(
+                  onChanged: provider.updateEmail,
                   controller: emailController,
                   decoration: const InputDecoration(
                     labelText: 'Email',
@@ -31,29 +32,50 @@ class LoginView extends StatelessWidget {
                 ),
                 const SizedBox(height: 16.0), // Provide some vertical spacing
                 TextField(
+                  onChanged: provider.updatePassword,
                   controller: passwordController,
                   obscureText: true, // Use secure text for password.
                   decoration: const InputDecoration(
                     labelText: 'Password',
                   ),
                 ),
-                const SizedBox(height: 16.0), // Provide some vertical spacing
+                const SizedBox(height: 30.0), // Provide some vertical spacing
 
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
                       child: const Text('로그인'),
-                      onPressed: () {
-                        // TODO: Implement your login logic here
+                      onPressed: () async {
+                        final result = await provider.signIn(
+                            emailController.text, passwordController.text);
+                        if (kDebugMode) {
+                          print('로그인 결과: $result');
+                        }
                       },
                     ),
+                    const SizedBox(
+                        width: 16.0), // Provide some horizontal spacing
                     ElevatedButton(
                       child: const Text('회원가입'),
                       onPressed: () {
                         if (kDebugMode) {
                           print("회원가입");
                         }
-                        provider.signUp('', '');
+                      },
+                    ),
+                    const SizedBox(width: 16.0),
+                    ElevatedButton(
+                      child: const Text('로그아웃'),
+                      onPressed: () async {
+                        await provider.signOut();
+                      },
+                    ),
+                    const SizedBox(width: 16.0),
+                    ElevatedButton(
+                      child: const Text('유저정보 확인'),
+                      onPressed: () async {
+                        provider.getCurrentUser();
                       },
                     ),
                   ],
