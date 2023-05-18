@@ -52,23 +52,57 @@ class LoginView extends StatelessWidget {
                         if (kDebugMode) {
                           print('로그인 결과: $result');
                         }
-                      },
-                    ),
-                    const SizedBox(
-                        width: 16.0), // Provide some horizontal spacing
-                    ElevatedButton(
-                      child: const Text('회원가입'),
-                      onPressed: () {
-                        if (kDebugMode) {
-                          print("회원가입");
+
+                        // 로그인 실패
+                        if (result != null) {
+                          // ignore: use_build_context_synchronously
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(result),
+                            ),
+                          );
+                        }
+                        // 로그인 성공
+                        else {
+                          // ignore: use_build_context_synchronously
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('로그인 성공'),
+                            ),
+                          );
+                          // navigate to home page
+                          // Navigator.pushNamed(context, '/home');
                         }
                       },
                     ),
+                    // const SizedBox(
+                    //     width: 16.0), // Provide some horizontal spacing
+                    // ElevatedButton(
+                    //   child: const Text('회원가입'),
+                    //   onPressed: () {
+                    //     if (kDebugMode) {
+                    //       print("회원가입");
+                    //     }
+                    //     provider.signUp(
+                    //       emailController.text,
+                    //       passwordController.text,
+                    //     );
+                    //   },
+                    // ),
                     const SizedBox(width: 16.0),
                     ElevatedButton(
                       child: const Text('로그아웃'),
                       onPressed: () async {
                         await provider.signOut();
+                        // ignore: use_build_context_synchronously
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('로그아웃 되었습니다.'),
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(width: 16.0),

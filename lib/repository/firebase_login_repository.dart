@@ -37,6 +37,9 @@ class FirebaseLoginRepository {
         }
       }
     } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print('로그인 실패: ${e.code}');
+      }
       if (e.code == 'user-not-found') {
         throw Exception('사용자를 찾을 수 없습니다.');
       } else if (e.code == 'wrong-password') {
