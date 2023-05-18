@@ -4,11 +4,12 @@ import 'package:nado_giza/viewModel/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class LoginView extends StatelessWidget {
+  LoginView({super.key});
+
   // Create controllers for the text fields.
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
-  LoginView({super.key});
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,7 @@ class LoginView extends StatelessWidget {
                             ),
                           );
                           // navigate to home page
-                          // Navigator.pushNamed(context, '/home');
+                          Navigator.pushReplacementNamed(context, '/home');
                         }
                       },
                     ),

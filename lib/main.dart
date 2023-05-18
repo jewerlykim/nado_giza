@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nado_giza/view/home_view.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:nado_giza/view/login_view.dart';
@@ -41,6 +42,11 @@ class App extends StatelessWidget {
         useMaterial3: true,
       ),
       home: LoginView(),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginView(),
+        '/home': (context) => const HomeView(),
+      },
     );
   }
 }
