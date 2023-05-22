@@ -1,9 +1,49 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-class FirebaseLoginRepository {
+class FirebaseLoginRepository extends ChangeNotifier {
+  // 유저의 sign in 상태 변수
+  bool isSignedIn = false;
+  // getter
+  bool get getIsSignedIn => isSignedIn;
+  // factory 패턴 사용을 위한 변수
+  static final FirebaseLoginRepository _instance =
+      FirebaseLoginRepository._internal();
+
+  // factory 패턴
+  factory FirebaseLoginRepository.instance() {
+    if (kDebugMode) {
+      print('FirebaseLoginRepository instance');
+    }
+
+    return _instance;
+  }
+
   // 초기화
-  FirebaseLoginRepository();
+  FirebaseLoginRepository._internal() {
+    if (kDebugMode) {
+      print('FirebaseLoginRepository _internal');
+    }
+    authStateChanges();
+    notifyListeners();
+  }
+
+  // authStateChanges 확인
+  void authStateChanges() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        if (kDebugMode) {
+          print('authStateChanges::User is currently signed out!');
+        }
+        isSignedIn = false;
+      } else {
+        if (kDebugMode) {
+          print('authStateChanges::User is signed in!');
+        }
+        isSignedIn = true;
+      }
+    });
+  }
 
   // 회원가입
   Future<bool> signUp(String email, String password) async {

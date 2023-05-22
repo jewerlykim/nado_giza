@@ -3,14 +3,19 @@ import 'package:flutter/foundation.dart';
 import 'package:nado_giza/repository/firebase_login_repository.dart';
 
 class LoginViewmodel extends ChangeNotifier {
-  final firebaseLoginRepository = FirebaseLoginRepository();
+  final firebaseLoginRepository = FirebaseLoginRepository.instance();
 
   String email = '';
   String password = '';
 
+  // firebaseLoginRepository는 changeNotifier를 상속받고 있기때문에 getIsSignedIn을 갱신한다.
+  void authStateChanges() {
+    firebaseLoginRepository.authStateChanges();
+    notifyListeners();
+  }
+
   void updateEmail(String email) {
     this.email = email;
-
     notifyListeners();
   }
 

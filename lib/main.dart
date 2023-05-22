@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nado_giza/repository/firebase_login_repository.dart';
 import 'package:nado_giza/view/home_view.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseLoginRepository.instance();
 
   runApp(
     MultiProvider(
@@ -42,9 +44,8 @@ class App extends StatelessWidget {
         useMaterial3: true,
       ),
       home: LoginView(),
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
-        '/login': (context) => LoginView(),
         '/home': (context) => const HomeView(),
       },
     );

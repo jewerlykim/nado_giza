@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:nado_giza/repository/firebase_login_repository.dart';
 import 'package:nado_giza/viewModel/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -15,10 +16,34 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('로그인'),
       ),
       body: Consumer<LoginViewmodel>(
         builder: (context, provider, child) {
+          if (kDebugMode) {
+            print(
+                '1로그인뷰에서 로그인 상태 확인: ${FirebaseLoginRepository.instance().getIsSignedIn}');
+          }
+          // 1초 후에
+          Future.delayed(const Duration(seconds: 1));
+          // 로그인 상태 확인
+          if (FirebaseLoginRepository.instance().getIsSignedIn) {
+            if (kDebugMode) {
+              print(
+                  '2로그인뷰에서 로그인 상태 확인: ${FirebaseLoginRepository.instance().getIsSignedIn}');
+            }
+            // 사용자가 이미 로그인한 경우 홈 화면으로 이동
+            Future.microtask(
+              () => {
+                Navigator.pushReplacementNamed(context, '/home'),
+              },
+            );
+          } else {
+            if (kDebugMode) {
+              print(
+                  '3로그인뷰에서 로그인 상태 확인: ${FirebaseLoginRepository.instance().getIsSignedIn}');
+            }
+          }
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -28,7 +53,7 @@ class LoginView extends StatelessWidget {
                   onChanged: provider.updateEmail,
                   controller: emailController,
                   decoration: const InputDecoration(
-                    labelText: 'Email',
+                    labelText: '이메일',
                   ),
                 ),
                 const SizedBox(height: 16.0), // Provide some vertical spacing
@@ -37,7 +62,7 @@ class LoginView extends StatelessWidget {
                   controller: passwordController,
                   obscureText: true, // Use secure text for password.
                   decoration: const InputDecoration(
-                    labelText: 'Password',
+                    labelText: '패스워드',
                   ),
                 ),
                 const SizedBox(height: 30.0), // Provide some vertical spacing
