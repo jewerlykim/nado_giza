@@ -57,6 +57,16 @@ class FirebaseLoginRepository extends ChangeNotifier {
         throw Exception('비밀번호가 너무 약합니다.');
       } else if (e.code == 'email-already-in-use') {
         throw Exception('이미 사용중인 이메일입니다.');
+      } else if (e.code == 'invalid-email') {
+        throw Exception('이메일 형식이 잘못되었습니다.');
+      } else if (e.code == 'operation-not-allowed') {
+        throw Exception('사용이 정지된 계정입니다.');
+      } else if (e.code == 'too-many-requests') {
+        throw Exception('너무 많은 요청이 들어왔습니다. 잠시 후 다시 시도해주세요.');
+      } else if (e.code == 'network-request-failed') {
+        throw Exception('네트워크 연결이 끊겼습니다.');
+      } else {
+        throw Exception('회원가입에 실패했습니다. ${e.toString()}');
       }
     } catch (e) {
       throw Exception('회원가입에 실패했습니다. ${e.toString()}');

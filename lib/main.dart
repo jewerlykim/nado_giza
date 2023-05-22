@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nado_giza/repository/firebase_login_repository.dart';
 import 'package:nado_giza/view/home_view.dart';
+import 'package:nado_giza/view/signup_view.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:nado_giza/view/login_view.dart';
-import 'package:nado_giza/viewModel/count_viewmodel.dart';
 import 'package:nado_giza/viewModel/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +19,6 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<CountViewModel>(
-          create: (_) => CountViewModel(),
-        ),
         ChangeNotifierProvider<LoginViewmodel>(
           create: (_) => LoginViewmodel(),
         ),
@@ -47,6 +44,7 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/home': (context) => const HomeView(),
+        '/signup': (context) => const SignUpView(),
       },
     );
   }

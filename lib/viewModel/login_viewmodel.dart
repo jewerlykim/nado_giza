@@ -24,13 +24,13 @@ class LoginViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> signUp(String email, String password) async {
+  Future<String?> signUp(String email, String password) async {
     try {
       await firebaseLoginRepository.signUp(email, password);
     } catch (e) {
-      throw Exception(e);
+      return e.toString();
     }
-    return true;
+    return null;
   }
 
   Future<String?> signIn(String email, String password) async {

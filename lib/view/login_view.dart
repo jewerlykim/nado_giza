@@ -9,11 +9,44 @@ class LoginView extends StatelessWidget {
 
   // Create controllers for the text fields.
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // 로그인 처리를 위한 메서드
+    Future<void> handleLogin() async {
+      final provider = Provider.of<LoginViewmodel>(context, listen: false);
+      final result =
+          await provider.signIn(emailController.text, passwordController.text);
+
+      if (kDebugMode) {
+        print('로그인 결과: $result');
+      }
+
+      // 로그인 실패
+      if (result != null) {
+        // ignore: use_build_context_synchronously
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result),
+          ),
+        );
+      }
+      // 로그인 성공
+      else {
+        // ignore: use_build_context_synchronously
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('로그인 성공'),
+          ),
+        );
+        // navigate to home page
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('로그인'),
@@ -64,6 +97,9 @@ class LoginView extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: '패스워드',
                   ),
+                  onSubmitted: (value) {
+                    handleLogin();
+                  },
                 ),
                 const SizedBox(height: 30.0), // Provide some vertical spacing
 
@@ -72,65 +108,25 @@ class LoginView extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       child: const Text('로그인'),
-                      onPressed: () async {
-                        final result = await provider.signIn(
-                            emailController.text, passwordController.text);
+                      onPressed: () {
                         if (kDebugMode) {
-                          print('로그인 결과: $result');
+                          print("로그인");
                         }
-
-                        // 로그인 실패
-                        if (result != null) {
-                          // ignore: use_build_context_synchronously
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(result),
-                            ),
-                          );
-                        }
-                        // 로그인 성공
-                        else {
-                          // ignore: use_build_context_synchronously
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('로그인 성공'),
-                            ),
-                          );
-                          // navigate to home page
-                          Navigator.pushReplacementNamed(context, '/home');
-                        }
+                        handleLogin();
                       },
                     ),
-                    // const SizedBox(
-                    //     width: 16.0), // Provide some horizontal spacing
-                    // ElevatedButton(
-                    //   child: const Text('회원가입'),
-                    //   onPressed: () {
-                    //     if (kDebugMode) {
-                    //       print("회원가입");
-                    //     }
-                    //     provider.signUp(
-                    //       emailController.text,
-                    //       passwordController.text,
-                    //     );
-                    //   },
-                    // ),
-                    const SizedBox(width: 16.0),
+                    const SizedBox(
+                        width: 16.0), // Provide some horizontal spacing
                     ElevatedButton(
-                      child: const Text('로그아웃'),
-                      onPressed: () async {
-                        await provider.signOut();
-                        // ignore: use_build_context_synchronously
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('로그아웃 되었습니다.'),
-                          ),
-                        );
+                      child: const Text('회원가입'),
+                      onPressed: () {
+                        if (kDebugMode) {
+                          print("회원가입");
+                        }
+                        Navigator.pushNamed(context, '/signup');
                       },
                     ),
+
                     const SizedBox(width: 16.0),
                     ElevatedButton(
                       child: const Text('유저정보 확인'),
