@@ -16,7 +16,7 @@ class NewsDataRepository {
   get http => null;
 // Local JSON 파일에서 데이터 로드
   Future<List<NewsData>> loadFromLocalJson() async {
-    final data = await rootBundle.loadString('2023-06-01-17.json');
+    final data = await rootBundle.loadString('2023-06-01-18.json');
     final jsonResult = json.decode(data);
     final newsData = jsonResult as List;
     return newsData.map((news) => NewsData.fromJson(news)).toList();

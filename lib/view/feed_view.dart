@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nado_giza/view/detail_view.dart';
@@ -49,13 +50,22 @@ class FeedView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(15.0),
-                          ),
-                          child: Image.asset(
-                            'sample.png',
-                            fit: BoxFit.cover,
-                          )),
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(15.0),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: provider.newsData?[index].thumbnailUrl ??
+                              'sample.png',
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) {
+                            if (kDebugMode) {
+                              print(error);
+                            }
+                            return const Icon(Icons.error);
+                          },
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),

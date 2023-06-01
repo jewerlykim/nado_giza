@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 
@@ -37,9 +38,13 @@ class _DetailViewState extends State<DetailView> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15), // Add border radius
-                  child: Image.asset(
-                    'sample.png',
-                    fit: BoxFit.cover,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.newsData.thumbnailUrl,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) {
+                      return const Icon(Icons.error);
+                    },
                   ),
                 ),
               ),
@@ -63,7 +68,7 @@ class _DetailViewState extends State<DetailView> {
                 ),
               ),
 
-              const SizedBox(height: 10), // Add space
+              const SizedBox(height: 30), // Add space
 
               // 요약 <-> 쉬운 요약 FlipCard
               FlipCard(
