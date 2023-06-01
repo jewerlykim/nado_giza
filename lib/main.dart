@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:nado_giza/repository/firebase_login_repository.dart';
 import 'package:nado_giza/view/home_view.dart';
 import 'package:nado_giza/view/signup_view.dart';
+import 'package:nado_giza/viewModel/news_data_viewmodel.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:nado_giza/view/login_view.dart';
@@ -21,6 +22,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider<LoginViewmodel>(
           create: (_) => LoginViewmodel(),
+        ),
+        ChangeNotifierProvider<NewsViewModel>(
+          create: (_) => NewsViewModel(),
         ),
       ],
       child: const App(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nado_giza/view/feed_view.dart';
 import 'package:nado_giza/viewModel/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -66,7 +67,9 @@ class HomeView extends StatelessWidget {
             children: [
               // 이곳에 각 탭에서 보여줄 페이지를 추가합니다.
               // 예를 들어, FeedPage(), RealTimePage(), StatsPage(), ProfilePage() 등
-              Center(child: Text('Feed Page')),
+              Center(
+                child: FeedView(),
+              ),
               Center(child: Text('Real Time Page')),
               Center(child: Text('Stats Page')),
               Center(child: Text('Profile Page')),
