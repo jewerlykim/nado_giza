@@ -126,14 +126,6 @@ class LoginView extends StatelessWidget {
                         Navigator.pushNamed(context, '/signup');
                       },
                     ),
-
-                    const SizedBox(width: 16.0),
-                    ElevatedButton(
-                      child: const Text('유저정보 확인'),
-                      onPressed: () async {
-                        provider.getCurrentUser();
-                      },
-                    ),
                   ],
                 ),
               ],

@@ -1,8 +1,8 @@
 import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-
 import '../model/news_data_model.dart';
+import 'package:http/http.dart' as httpPack;
 
 class NewsDataRepository {
   static NewsDataRepository? _instance;
@@ -16,7 +16,7 @@ class NewsDataRepository {
   get http => null;
 // Local JSON 파일에서 데이터 로드
   Future<List<NewsData>> loadFromLocalJson() async {
-    final data = await rootBundle.loadString('2023-06-01-18.json');
+    final data = await rootBundle.loadString('2023-06-05-16.json');
     final jsonResult = json.decode(data);
     final newsData = jsonResult as List;
     return newsData.map((news) => NewsData.fromJson(news)).toList();
@@ -31,12 +31,22 @@ class NewsDataRepository {
   }
 
 // API에서 데이터 로드
-  Future<NewsData> loadFromApi() async {
-    final response = await http.get('https://your-api-endpoint.com/news');
+  Future<List<NewsData>> loadFromApi() async {
+    final response = await httpPack.get(
+      Uri.parse('http://192.168.0.24:8000/getNews'),
+      headers: {"Accept": "application/json"},
+    );
+
+    if (kDebugMode) {
+      print("=====1");
+    }
+
+    var data = utf8.decode(response.bodyBytes);
 
     if (response.statusCode == 200) {
-      final jsonResult = json.decode(response.body);
-      return NewsData.fromJson(jsonResult);
+      final jsonResult = json.decode(data);
+      final newsData = jsonResult as List;
+      return newsData.map((news) => NewsData.fromJson(news)).toList();
     } else {
       throw Exception('Failed to load news data');
     }

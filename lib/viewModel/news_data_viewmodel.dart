@@ -7,20 +7,26 @@ class NewsViewModel extends ChangeNotifier {
   List<String>? keywords;
 
   NewsViewModel() {
+    if (kDebugMode) {
+      print("NewsViewModel====");
+    }
+
     loadNews();
-    loadKeywords();
+    // loadKeywords();
   }
 
   loadNews() async {
     try {
       // Local JSON 파일에서 데이터 로드
-      newsData = await NewsDataRepository.instance.loadFromLocalJson();
+      newsData = await NewsDataRepository.instance.loadFromApi();
       // API에서 데이터 로드
-      // newsData = await loadFromApi();
 
       notifyListeners();
     } catch (e) {
       // 에러 처리
+      if (kDebugMode) {
+        print("ERROR: $e");
+      }
     }
   }
 

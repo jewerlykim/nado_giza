@@ -12,22 +12,25 @@ class FeedView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
-      appBar: AppBar(
-        title: const Text('대한민국 트렌드'),
-        centerTitle: true,
-      ),
       body: Consumer<NewsViewModel>(builder: (context, provider, child) {
         if (kDebugMode) {
-          print('provider.newsData: ${provider.newsData}');
+          print("=====2");
         }
+
+        final newsDataList = provider.newsData ?? [];
+
+        if (newsDataList.isEmpty) {
+          provider.loadNews();
+        }
+
         return GridView.builder(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(2.0),
           itemCount: provider.newsData?.length ?? 0,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            crossAxisSpacing: 20.0,
-            mainAxisSpacing: 20.0,
-            childAspectRatio: 1 / 1,
+            // crossAxisSpacing: 10.0,
+            // mainAxisSpacing: 10.0,
+            childAspectRatio: 1 / 1.5,
           ),
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
@@ -36,14 +39,15 @@ class FeedView extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => DetailView(
-                      newsData: provider.newsData![index],
+                      currentIndex: index,
+                      newsDataList: newsDataList,
                     ),
                   ),
                 );
               },
               child: Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
                 elevation: 10,
                 child: Column(
@@ -51,9 +55,10 @@ class FeedView extends StatelessWidget {
                     Expanded(
                       child: ClipRRect(
                         borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(15.0),
+                          top: Radius.circular(5.0),
                         ),
                         child: CachedNetworkImage(
+                          fit: BoxFit.fitHeight,
                           imageUrl: provider.newsData?[index].thumbnailUrl ??
                               'sample.png',
                           placeholder: (context, url) =>
@@ -68,15 +73,18 @@ class FeedView extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        '${provider.newsData?[index].title ?? ''}\n${provider.newsData?[index].analyze.mainKeyword ?? ''}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                      padding: const EdgeInsets.all(5.0),
+                      child: Center(
+                        child: Text(
+                          '${provider.newsData?[index].title ?? ''}\n${provider.newsData?[index].analyze.mainKeyword ?? ''}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],

@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "d-web": "zsh ./scripts/web.sh"
+  }
+}
